@@ -83,7 +83,7 @@ export default function useImageTransform(
     clientX?: number,
     clientY?: number,
   ) => {
-    const { width, height, offsetWidth, offsetHeight, offsetLeft, offsetTop } = imgRef.current;
+    let { width, height, offsetWidth, offsetHeight, offsetLeft, offsetTop } = imgRef.current;
 
     let newRatio = ratio;
     let newScale = transform.scale * ratio;
@@ -93,6 +93,11 @@ export default function useImageTransform(
     } else if (newScale < minScale) {
       newRatio = minScale / transform.scale;
       newScale = minScale;
+    }
+
+    if (imgRef.current.parentNode.parentNode.id === 'custom-ant-image-preview-img-container') {
+      offsetLeft = imgRef.current.parentNode.parentNode.offsetLeft;
+      offsetTop = imgRef.current.parentNode.parentNode.offsetTop;
     }
 
     /** Default center point scaling */
